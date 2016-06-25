@@ -25,6 +25,7 @@ import java.util.Random;
 public class GameActivity extends Activity implements View.OnClickListener {
 
     Drawable defaultButtonBackgroundDrawable;
+    Boolean setDefault = false;
 
     //animation
     Animation wobble;
@@ -129,6 +130,11 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 super.handleMessage(msg);
 
                 if(playSequence){
+
+                    //Log.i("info", "elementToPlay: "+ elementToPlay);
+                    //Log.i("info", "button #: " + sequenceToCopy[elementToPlay]);
+                    //System.out.println("testing outLIne");
+
                     // All the thread action will go here
                     // make sure all the buttons are made visible
                     /*
@@ -142,50 +148,64 @@ public class GameActivity extends Activity implements View.OnClickListener {
                     button3.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
                     button4.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
 
-                    switch(sequenceToCopy[elementToPlay]){
-                        case 1:
-                            //hide a button
-                            //button1.setVisibility(View.INVISIBLE);
-                            button1.startAnimation(wobble);
-                            button1.setBackgroundColor(Color.RED);
-                            // play a sound
-                            soundPool.play(sample1, 1, 1, 0, 0, 1);
-                            break;
-
-                        case 2:
-                            //hide a button
-                            //button2.setVisibility(View.INVISIBLE);
-                            button2.startAnimation(wobble);
-                            button2.setBackgroundColor(Color.BLUE);
-                            // play a sound
-                            soundPool.play(sample2, 1, 1, 0, 0, 1);
-                            break;
-
-                        case 3:
-                            //hide a button
-                            //button3.setVisibility(View.INVISIBLE);
-                            button3.startAnimation(wobble);
-                            button3.setBackgroundColor(Color.YELLOW);
-                            // play a sound
-                            soundPool.play(sample3, 1, 1, 0, 0, 1);
-                            break;
-
-                        case 4:
-                            //hide a button
-                            //button4.setVisibility(View.INVISIBLE);
-                            button4.startAnimation(wobble);
-                            button4.setBackgroundColor(Color.GREEN);
-                            // play a sound
-                            soundPool.play(sample4, 1, 1, 0, 0, 1);
-                            break;
-                        case 5:
-                            button1.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
-                            button2.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
-                            button3.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
-                            button4.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
-                            break;
-
+                    if (setDefault)
+                    {
+                        button1.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
+                        button2.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
+                        button3.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
+                        button4.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
                     }
+                    else
+                    {
+                        switch(sequenceToCopy[elementToPlay]){
+                            case 1:
+                                //hide a button
+                                //button1.setVisibility(View.INVISIBLE);
+                                button1.startAnimation(wobble);
+                                button1.setBackgroundColor(Color.RED);
+                                // play a sound
+                                soundPool.play(sample1, 1, 1, 0, 0, 1);
+                                break;
+
+                            case 2:
+                                //hide a button
+                                //button2.setVisibility(View.INVISIBLE);
+                                button2.startAnimation(wobble);
+                                button2.setBackgroundColor(Color.BLUE);
+                                // play a sound
+                                soundPool.play(sample2, 1, 1, 0, 0, 1);
+                                break;
+
+                            case 3:
+                                //hide a button
+                                //button3.setVisibility(View.INVISIBLE);
+                                button3.startAnimation(wobble);
+                                button3.setBackgroundColor(Color.YELLOW);
+                                // play a sound
+                                soundPool.play(sample3, 1, 1, 0, 0, 1);
+                                break;
+
+                            case 4:
+                                //hide a button
+                                //button4.setVisibility(View.INVISIBLE);
+                                button4.startAnimation(wobble);
+                                button4.setBackgroundColor(Color.GREEN);
+                                // play a sound
+                                soundPool.play(sample4, 1, 1, 0, 0, 1);
+                                break;
+                            case 5:
+                                button1.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
+                                button2.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
+                                button3.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
+                                button4.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.btn_default));
+                                //Log.i("info", "in case5");
+                                break;
+
+                        }
+                    }
+
+
+
                     /*
 
                     elementToPlay++;
@@ -194,17 +214,23 @@ public class GameActivity extends Activity implements View.OnClickListener {
                         sequenceFinished();;
                     }*/
 
-                    if (sequenceToCopy[elementToPlay] == 5)
+                    if (setDefault)
                     {
+                        setDefault = false;
                         sequenceFinished();
                     }
+                    /*
                     else if (elementToPlay==difficultyLevel)
                     {
-                        sequenceToCopy[elementToPlay] = 5;
-                    }
+                        setDefault = true;
+                    }*/
                     else
                     {
                         elementToPlay++;
+                        if (elementToPlay == difficultyLevel)
+                        {
+                            setDefault = true;
+                        }
                     }
 
                     /*
@@ -282,6 +308,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 textScore.setText("Score = " + playerScore);
                 if (playerResponses == difficultyLevel)
                 {
+
                     // Got the whole sequence
                     // don't checkElement anymore
                     isResponding = false;
